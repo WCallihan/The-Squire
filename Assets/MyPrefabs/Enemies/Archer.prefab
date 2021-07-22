@@ -147,14 +147,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackCooldown: 3
   vectorToPlayer: {x: 0, y: 0}
-  shootArrowSound: {fileID: 0}
+  shootArrowSound: {fileID: 8300000, guid: 06a928429ac233f43ac0f3e304e0d23f, type: 3}
   player: {fileID: 0}
   sideLeftArrowSpawn: {fileID: 5498494066756704623}
   sideRightArrowSpawn: {fileID: 5498494067766238872}
   downLeftArrowSpawn: {fileID: 5498494067153655836}
   downRightArrowSpawn: {fileID: 5498494067283567093}
   arrowPrefab: {fileID: 8160657293169138889, guid: 37e959b860ae04c47aed45d883ce1e82, type: 3}
-  attackRange: 9
+  attackRange: 8.75
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   currentHealth: 0
-  hurtSound: {fileID: 0}
+  hurtSound: {fileID: 8300000, guid: 28035043174d44f928d428fc44f59150, type: 3}
   isDead: 0
 --- !u!114 &-3714463190381638035
 MonoBehaviour:

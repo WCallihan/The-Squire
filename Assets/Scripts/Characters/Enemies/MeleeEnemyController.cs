@@ -15,7 +15,7 @@ public class MeleeEnemyController : MonoBehaviour {
     [SerializeField] float attackCooldown;
     [SerializeField] float attackDistance;
 
-    [SerializeField] AudioClip swordSwipeSound;
+    [SerializeField] AudioClip weaponSwipeSound;
 
     [SerializeField] GameObject player;
     private HealthManager healthManager;
@@ -135,7 +135,7 @@ public class MeleeEnemyController : MonoBehaviour {
             if(enemiesToDamage != null)
                 enemy.GetComponent<HealthManager>().TakeDamage(attackDamage);
         }
-        audioSource.PlayOneShot(swordSwipeSound);
+        audioSource.PlayOneShot(weaponSwipeSound);
     }
     //called at beginning and end of attack animation to signal when it is attacking
     public void SetAttacking(int isAttacking) {

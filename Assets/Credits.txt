@@ -9,3 +9,5 @@ Platformer Set- Szadi Art
 Pixel Dark Forest- Szadi Art
 Health Bar Sprites- Brackeys
 Tripfive Font- PixelMush
+Sound Effects- SF Audio Guild, Potion Audio, and Idia Software LLC
+Music- CodeManu and VOID1 Gaming

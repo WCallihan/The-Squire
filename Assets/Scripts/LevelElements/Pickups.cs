@@ -12,6 +12,7 @@ public enum PickupType { None, Key }
 public class Pickups : MonoBehaviour {
 
     public PickupType pickupType;
+    public AudioClip pickupSound;
 
     private float startPos;
     private float topPos;

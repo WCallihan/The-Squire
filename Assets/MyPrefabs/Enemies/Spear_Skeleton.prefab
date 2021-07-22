@@ -116,7 +116,7 @@ MonoBehaviour:
   moveVector: {x: 0, y: 0}
   attackCooldown: 2
   attackDistance: 2
-  swordSwipeSound: {fileID: 0}
+  weaponSwipeSound: {fileID: 8300000, guid: e4e77a33a5ab94877b41797b35ff5cc0, type: 3}
   player: {fileID: 0}
   patrolLeftPos: {x: 0, y: 0}
   patrolRightPos: {x: 0, y: 0}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 2
   currentHealth: 0
-  hurtSound: {fileID: 0}
+  hurtSound: {fileID: 8300000, guid: b9f59988c1324474483df39c5887d6c3, type: 3}
   isDead: 0
 --- !u!114 &4853509548872084253
 MonoBehaviour:

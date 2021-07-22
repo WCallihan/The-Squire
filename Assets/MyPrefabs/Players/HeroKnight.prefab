@@ -147,8 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   jumpForce: 15
-  swordSwingSounds: []
-  blockSound: {fileID: 0}
+  weaponSwingSounds:
+  - {fileID: 8300000, guid: 6d13948172ea948b1842ef3e10ff3095, type: 3}
+  currentWeapon: 0
   hasKey: 0
   attackLeftPos: {fileID: 1832742330669055143}
   attackRightPos: {fileID: 6729598144710276692}
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   currentHealth: 0
-  hurtSound: {fileID: 0}
+  hurtSound: {fileID: 8300000, guid: 5f81bdff582c2fc4488e1129bc037245, type: 3}
   isDead: 0
 --- !u!114 &7847154010603899154
 MonoBehaviour:

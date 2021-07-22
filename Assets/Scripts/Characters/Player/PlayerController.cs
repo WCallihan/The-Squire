@@ -13,12 +13,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float speed = 4f;
     [SerializeField] float jumpForce = 7.5f;
 
-    [SerializeField] AudioClip[] swordSwingSounds;
-    [SerializeField] AudioClip blockSound;
+    [SerializeField] AudioClip[] weaponSwingSounds;
+    [SerializeField] int currentWeapon = 0;
 
     private HealthManager healthManager;
     private Animator animator;
     private Rigidbody2D playerRb;
+    private AudioSource audioSource;
     private GroundSensor groundSensor;
 
     private float timeSinceAttack = 0f;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour {
         healthManager = GetComponent<HealthManager>();
         animator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         groundSensor = transform.Find("GroundSensor").GetComponent<GroundSensor>();
     }
 
@@ -104,6 +106,7 @@ public class PlayerController : MonoBehaviour {
             //Picking up pickups
             if(Input.GetKeyDown(KeyCode.E) && touchingPickup != null) {
                 PickupType currentPickup = touchingPickup.gameObject.GetComponent<Pickups>().pickupType;
+                audioSource.PlayOneShot(touchingPickup.gameObject.GetComponent<Pickups>().pickupSound);
                 if(currentPickup == PickupType.Key) {
                     hasKey = true;
                     touchingPickup.gameObject.SetActive(false);
@@ -128,10 +131,10 @@ public class PlayerController : MonoBehaviour {
 
     //called by the animation at proper moment in attack animation; calls Attack and launches projectiles
     public void AttackTrigger() {
-        Attack(attackDamage, facingDirection);
+        Attack(attackDamage, facingDirection, currentWeapon);
     }
     //called by AttackTrigger to deal damage, animation handled above
-    public void Attack(float damage, int facingDirection) {
+    public void Attack(float damage, int facingDirection, int currentWeapon) {
         Collider2D[] enemiesToDamage = null;
         if(facingDirection == 1) { //facing right
             enemiesToDamage = Physics2D.OverlapCircleAll(attackRightPos.position, attackRange, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
@@ -143,6 +146,7 @@ public class PlayerController : MonoBehaviour {
         foreach(Collider2D enemy in enemiesToDamage) {
             enemy.GetComponent<HealthManager>().TakeDamage(damage);
         }
+        audioSource.PlayOneShot(weaponSwingSounds[currentWeapon]);
     }
 
     //called at end of death animation to trigger everything else respawning

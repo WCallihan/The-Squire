@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour {
         playerController = player.GetComponent<PlayerController>();
     }
 
+    //constantly checks if the player is respawning, and then tells all other objects to respawn if able
     void Update() {
         if(playerController.playerRespawning) {
             playerController.playerRespawning = false;
@@ -20,6 +21,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //finds all respawnable objects and tells them to respawn
     private void RespawnCheckpoint() {
         foreach(var respawnableObject in respawnableObjects) {
             respawnableObject.SetActive(true);

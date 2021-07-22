@@ -81,7 +81,6 @@ public class ArcherEnemyController : MonoBehaviour {
             //Attack when the player is in range
             if(playerInRange && !attacking && timeSinceAttack >= attackCooldown) {
                 attacking = true;
-                audioSource.PlayOneShot(shootArrowSound);
                 animator.SetTrigger(attackAnimation); //projectile spawning triggered by animation
                 timeSinceAttack = 0f; //resets attack timer
             }
@@ -124,6 +123,7 @@ public class ArcherEnemyController : MonoBehaviour {
         SetArrowSpawnPos();
         GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPos.transform.position, arrowPrefab.transform.rotation * Quaternion.Euler(0f, 0f, arrowAngle));
         arrow.GetComponent<Projectile>().arrowDamage = arrowDamage;
+        audioSource.PlayOneShot(shootArrowSound);
     }
     //called at beginning and end of attack animation to signal when it is attacking
     public void SetAttacking(int isAttacking) {
@@ -142,6 +142,7 @@ public class ArcherEnemyController : MonoBehaviour {
 
     //draws representation of the attack area when the object is selected in the editor
     private void OnDrawGizmosSelected() {
+        Gizmos.DrawWireSphere(transform.position, attackRange);
         if(sideLeftArrowSpawn != null) {
             Gizmos.DrawWireSphere(sideLeftArrowSpawn.transform.position, 0.1f);
         }

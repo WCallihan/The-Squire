@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Pickup
   - Obstacle
+  - Music
   layers:
   - Default
   - TransparentFX
