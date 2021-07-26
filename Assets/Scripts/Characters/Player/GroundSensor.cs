@@ -24,11 +24,15 @@ public class GroundSensor : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        collisionCount++;
+        if(!other.gameObject.CompareTag("Enemy")) { //makes sure the player can't jump off enemies or archer ranges
+            collisionCount++;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other) {
-        collisionCount--;
+        if(!other.gameObject.CompareTag("Enemy")) { //makes sure the player can't jump off enemies or archer ranges
+            collisionCount--;
+        }
     }
 
     //counts down the disableTimer; only important immediately after Disable is called
