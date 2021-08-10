@@ -11,6 +11,7 @@ public class ParallaxBackground : MonoBehaviour {
 
     [SerializeField] Camera mainCamera;
     [SerializeField] float parallaxFactor;
+    [SerializeField] bool Level1 = false;
     private Vector3 startPos;
 
     void Start() {
@@ -19,7 +20,11 @@ public class ParallaxBackground : MonoBehaviour {
 
     
     void LateUpdate() {
-        Vector3 distance = mainCamera.transform.position * parallaxFactor;
+        Vector3 distance;
+        if(Level1)
+            distance = mainCamera.transform.position * parallaxFactor;
+        else
+            distance = (mainCamera.transform.position * parallaxFactor) - startPos;
         Vector3 newPosition = new Vector3(startPos.x + distance.x, startPos.y + distance.y, startPos.z);
         transform.position = newPosition;
     }

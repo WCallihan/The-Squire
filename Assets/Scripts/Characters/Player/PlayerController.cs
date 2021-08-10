@@ -8,15 +8,19 @@ using UnityEngine;
  * effects
  */
 
+public enum WeaponType { Sword, Claymore, Spear, Club }
+
 public class PlayerController : MonoBehaviour {
 
     [SerializeField] float speed = 4f;
     [SerializeField] float jumpForce = 7.5f;
 
     [SerializeField] AudioClip[] weaponSwingSounds;
-    [SerializeField] int currentWeapon = 0;
+    public WeaponType currentWeapon = WeaponType.Sword; //unchanging on HeroKnight
+    [SerializeField] bool multipleWeapons = true; //true on Squire, false on HeroKnight
 
     private HealthManager healthManager;
+    private HUDManager hudManager;
     private Animator animator;
     private Rigidbody2D playerRb;
     private AudioSource audioSource;
@@ -35,12 +39,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform attackRightPos;
     [SerializeField] float attackRange;
     [SerializeField] LayerMask enemyLayers;
-    [SerializeField] float attackDamage = 1;
 
     public bool playerRespawning = false;
 
     void Start() {
         healthManager = GetComponent<HealthManager>();
+        hudManager = GetComponent<HUDManager>();
         animator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
@@ -75,8 +79,26 @@ public class PlayerController : MonoBehaviour {
             animator.SetFloat("AirSpeedY", playerRb.velocity.y);
 
             // -- Handle Animations --
+            //Change Weapons
+            if(multipleWeapons) {
+                if(Input.GetKeyDown(KeyCode.Alpha1)) {
+                    currentWeapon = WeaponType.Sword;
+                    hudManager.UpdateWeaponSelected(WeaponType.Sword);
+                } else if(Input.GetKeyDown(KeyCode.Alpha2)) {
+                    currentWeapon = WeaponType.Claymore;
+                    hudManager.UpdateWeaponSelected(WeaponType.Claymore);
+                } else if(Input.GetKeyDown(KeyCode.Alpha3)) {
+                    currentWeapon = WeaponType.Spear;
+                    hudManager.UpdateWeaponSelected(WeaponType.Spear);
+                } else if(Input.GetKeyDown(KeyCode.Alpha4)) {
+                    currentWeapon = WeaponType.Club;
+                    hudManager.UpdateWeaponSelected(WeaponType.Club);
+                }
+            }
             //Attack
             if(Input.GetMouseButtonDown(0) && timeSinceAttack >= attackCooldown) {
+                if(multipleWeapons)
+                    animator.SetInteger("WeaponType", (int)currentWeapon); //parameter only on the Squire
                 animator.SetTrigger("Attack"); //actual attack triggered by animation
                 timeSinceAttack = 0.0f; //resets attack timer
             }
@@ -121,6 +143,11 @@ public class PlayerController : MonoBehaviour {
             touchingPickup = collision;
         } else if(collision.CompareTag("Obstacle")) {
             healthManager.TakeDamage(100);
+        } else if(collision.CompareTag("Falling Cutoff")) {
+            CameraFollow mainCameraFollow = GameObject.FindObjectOfType<CameraFollow>();
+            if(mainCameraFollow != null) {
+                mainCameraFollow.playerFall();
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision) {
@@ -131,11 +158,11 @@ public class PlayerController : MonoBehaviour {
 
     //called by the animation at proper moment in attack animation; calls Attack and launches projectiles
     public void AttackTrigger() {
-        Attack(attackDamage, facingDirection, currentWeapon);
+        Attack(currentWeapon, facingDirection);
     }
     //called by AttackTrigger to deal damage, animation handled above
-    public void Attack(float damage, int facingDirection, int currentWeapon) {
-        Collider2D[] enemiesToDamage = null;
+    public void Attack(WeaponType currentWeapon, int facingDirection) {
+        /*Collider2D[] enemiesToDamage = null;
         if(facingDirection == 1) { //facing right
             enemiesToDamage = Physics2D.OverlapCircleAll(attackRightPos.position, attackRange, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
         } else if(facingDirection == -1) { //facing left
@@ -143,10 +170,19 @@ public class PlayerController : MonoBehaviour {
         } else {
             Debug.Log("Melee failed");
         }
+        float damage = 1;
+        if(currentWeapon == WeaponType.Sword)
+            damage = 1;
+        else if(currentWeapon == WeaponType.Claymore)
+            damage = 3;
+        else if(currentWeapon == WeaponType.Spear)
+            damage = 0.5f;
+        else if(currentWeapon == WeaponType.Club)
+            damage = 2;
         foreach(Collider2D enemy in enemiesToDamage) {
             enemy.GetComponent<HealthManager>().TakeDamage(damage);
-        }
-        audioSource.PlayOneShot(weaponSwingSounds[currentWeapon]);
+        }*/
+        audioSource.PlayOneShot(weaponSwingSounds[(int)currentWeapon]);
     }
 
     //called at end of death animation to trigger everything else respawning

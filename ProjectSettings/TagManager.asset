@@ -8,6 +8,7 @@ TagManager:
   - Pickup
   - Obstacle
   - Music
+  - Falling Cutoff
   layers:
   - Default
   - TransparentFX

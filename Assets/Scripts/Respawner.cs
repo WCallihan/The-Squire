@@ -18,6 +18,9 @@ public class Respawner : MonoBehaviour {
 
     //called by LevelManager when the player dies and respawns; puts everything back to where it was at the last checkpoint
     public void Respawn() {
+        Rigidbody2D objectRb = gameObject.GetComponent<Rigidbody2D>();
+        if(objectRb != null)
+            objectRb.velocity = Vector3.zero;
         transform.position = respawnPosition;
         spriteRenderer.flipX = spriteFlipped;
 

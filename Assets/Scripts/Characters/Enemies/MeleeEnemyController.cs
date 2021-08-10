@@ -34,7 +34,7 @@ public class MeleeEnemyController : MonoBehaviour {
 
     [SerializeField] Transform attackLeftPos;
     [SerializeField] Transform attackRightPos;
-    [SerializeField] float attackRange = 0.5f;
+    [SerializeField] float attackRadius = 0.5f;
     [SerializeField] LayerMask enemyLayers;
     [SerializeField] float attackDamage = 1;
 
@@ -51,8 +51,8 @@ public class MeleeEnemyController : MonoBehaviour {
         if(/*gameManager.gameRunning &&*/ !healthManager.isDead) {
             //Set moveVector to the next patrol waypoint or player if within patrol range
             if(player != null && //if a player enemy is assigned
-                (player.transform.position.x >= patrolLeftPos.x && player.transform.position.x <= patrolRightPos.x) && //if the player is between the patrol points
-                (Mathf.Abs(player.transform.position.y - transform.position.y)) <= 4f) //if the player is on the same level or is jumping/falling
+                (player.transform.position.x >= patrolLeftPos.x - attackDistance && player.transform.position.x <= patrolRightPos.x + attackDistance) && //if the player is between the patrol points
+                (Mathf.Abs(player.transform.position.y - transform.position.y)) <= 3f) //if the player is on the same level or is jumping/falling
                 {
                 moveVector = new Vector2(player.transform.position.x - transform.position.x, 0);
                 followingPlayer = true;
@@ -125,9 +125,9 @@ public class MeleeEnemyController : MonoBehaviour {
     public void Attack(int facingDirection) {
         Collider2D[] enemiesToDamage = null;
         if(facingDirection == 1) { //facing right
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackRightPos.position, attackRange, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
+            enemiesToDamage = Physics2D.OverlapCircleAll(attackRightPos.position, attackRadius, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
         } else if(facingDirection == -1) { //facing left
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackLeftPos.position, attackRange, enemyLayers);
+            enemiesToDamage = Physics2D.OverlapCircleAll(attackLeftPos.position, attackRadius, enemyLayers);
         } else {
             Debug.Log("Melee failed");
         }
@@ -154,10 +154,10 @@ public class MeleeEnemyController : MonoBehaviour {
     //draws representation of the attack area when the object is selected in the editor
     private void OnDrawGizmosSelected() {
         if(attackRightPos != null) {
-            Gizmos.DrawWireSphere(attackRightPos.position, attackRange);
+            Gizmos.DrawWireSphere(attackRightPos.position, attackRadius);
         }
         if(attackLeftPos != null) {
-            Gizmos.DrawWireSphere(attackLeftPos.position, attackRange);
+            Gizmos.DrawWireSphere(attackLeftPos.position, attackRadius);
         }
     }
 }

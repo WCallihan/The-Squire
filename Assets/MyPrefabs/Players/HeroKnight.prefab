@@ -150,6 +150,7 @@ MonoBehaviour:
   weaponSwingSounds:
   - {fileID: 8300000, guid: 6d13948172ea948b1842ef3e10ff3095, type: 3}
   currentWeapon: 0
+  multipleWeapons: 0
   hasKey: 0
   attackLeftPos: {fileID: 1832742330669055143}
   attackRightPos: {fileID: 6729598144710276692}
