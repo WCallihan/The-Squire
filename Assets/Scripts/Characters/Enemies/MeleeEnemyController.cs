@@ -48,7 +48,7 @@ public class MeleeEnemyController : MonoBehaviour {
     }
 
     void Update() {
-        if(/*gameManager.gameRunning &&*/ !healthManager.isDead) {
+        if(!healthManager.isDead) {
             //Set moveVector to the next patrol waypoint or player if within patrol range
             if(player != null && //if a player enemy is assigned
                 (player.transform.position.x >= patrolLeftPos.x - attackDistance && player.transform.position.x <= patrolRightPos.x + attackDistance) && //if the player is between the patrol points

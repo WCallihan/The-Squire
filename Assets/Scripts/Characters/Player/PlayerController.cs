@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 
     private float timeSinceAttack = 0f;
     private float attackCooldown = 0.25f;
+    private bool attacking = false;
     private float delayToIdle = 0f;
     private Collider2D touchingPickup;
     private bool grounded = false;
@@ -35,9 +36,15 @@ public class PlayerController : MonoBehaviour {
 
     public bool hasKey;
 
-    [SerializeField] Transform attackLeftPos;
-    [SerializeField] Transform attackRightPos;
-    [SerializeField] float attackRange;
+    [SerializeField] Transform swordAttackLeftPos;
+    [SerializeField] Transform swordAttackRightPos;
+    [SerializeField] float swordAttackRadius = 0.5f;
+    [SerializeField] Transform spearAttackLeftPos;
+    [SerializeField] Transform spearAttackRightPos;
+    [SerializeField] float spearAttackRadius = 0.5f;
+    [SerializeField] Transform claymoreClubAttackLeftPos;
+    [SerializeField] Transform claymoreClubAttackRightPos;
+    [SerializeField] float claymoreClubAttackRadius = 0.5f;
     [SerializeField] LayerMask enemyLayers;
 
     public bool playerRespawning = false;
@@ -52,7 +59,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if(/*gameManager.gameRunning &&*/ !healthManager.isDead) {
+        if(!healthManager.isDead) {
             // Increase timer that controls attack combo
             timeSinceAttack += Time.deltaTime;
 
@@ -61,7 +68,10 @@ public class PlayerController : MonoBehaviour {
             animator.SetBool("Grounded", grounded);
 
             //Horizontal Input
-            float inputX = Input.GetAxis("Horizontal");
+            float inputX = 0;
+            if(!attacking || !grounded) { //can move if not attacking unless in the air
+                inputX = Input.GetAxis("Horizontal");
+            }
 
             //Swap direction of sprite depending on walk direction
             if(inputX > 0) {
@@ -80,7 +90,7 @@ public class PlayerController : MonoBehaviour {
 
             // -- Handle Animations --
             //Change Weapons
-            if(multipleWeapons) {
+            if(multipleWeapons && !attacking) {
                 if(Input.GetKeyDown(KeyCode.Alpha1)) {
                     currentWeapon = WeaponType.Sword;
                     hudManager.UpdateWeaponSelected(WeaponType.Sword);
@@ -104,7 +114,7 @@ public class PlayerController : MonoBehaviour {
             }
 
             //Jump
-            else if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && grounded) {
+            else if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && grounded && !attacking) {
                 animator.SetTrigger("Jump");
                 playerRb.velocity = new Vector2(playerRb.velocity.x, jumpForce);
                 groundSensor.Disable(0.2f); //sets onGround to false for 0.2 seconds
@@ -162,27 +172,52 @@ public class PlayerController : MonoBehaviour {
     }
     //called by AttackTrigger to deal damage, animation handled above
     public void Attack(WeaponType currentWeapon, int facingDirection) {
-        /*Collider2D[] enemiesToDamage = null;
-        if(facingDirection == 1) { //facing right
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackRightPos.position, attackRange, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
-        } else if(facingDirection == -1) { //facing left
-            enemiesToDamage = Physics2D.OverlapCircleAll(attackLeftPos.position, attackRange, enemyLayers);
-        } else {
-            Debug.Log("Melee failed");
-        }
+        Collider2D[] enemiesToDamage = null;
+        Transform attackPos = swordAttackRightPos;
+        float attackRadius = swordAttackRadius;
         float damage = 1;
-        if(currentWeapon == WeaponType.Sword)
+        if(currentWeapon == WeaponType.Sword) {
+            if(facingDirection == 1) //facing right
+                attackPos = swordAttackRightPos;
+            else if(facingDirection == -1) //facing left
+                attackPos = swordAttackLeftPos;
+            attackRadius = swordAttackRadius;
             damage = 1;
-        else if(currentWeapon == WeaponType.Claymore)
+        } else if(currentWeapon == WeaponType.Claymore) {
+            if(facingDirection == 1) //facing right
+                attackPos = claymoreClubAttackRightPos;
+            else if(facingDirection == -1) //facing left
+                attackPos = claymoreClubAttackLeftPos;
+            attackRadius = claymoreClubAttackRadius;
             damage = 3;
-        else if(currentWeapon == WeaponType.Spear)
+        } else if(currentWeapon == WeaponType.Spear) {
+            if(facingDirection == 1) //facing right
+                attackPos = spearAttackRightPos;
+            else if(facingDirection == -1) //facing left
+                attackPos = spearAttackLeftPos;
+            attackRadius = spearAttackRadius;
             damage = 0.5f;
-        else if(currentWeapon == WeaponType.Club)
+        } else if(currentWeapon == WeaponType.Club) {
+            if(facingDirection == 1) //facing right
+                attackPos = claymoreClubAttackRightPos;
+            else if(facingDirection == -1) //facing left
+                attackPos = claymoreClubAttackLeftPos;
+            attackRadius = claymoreClubAttackRadius;
             damage = 2;
+        }
+        
+        enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
         foreach(Collider2D enemy in enemiesToDamage) {
-            enemy.GetComponent<HealthManager>().TakeDamage(damage);
-        }*/
+            if(enemy.CompareTag("Enemy"))
+                enemy.GetComponent<HealthManager>().TakeDamage(damage);
+            else if(enemy.CompareTag("Destructible"))
+                enemy.GetComponent<Destructible>().DestroyObject(currentWeapon);
+        }
         audioSource.PlayOneShot(weaponSwingSounds[(int)currentWeapon]);
+    }
+    //called at beginning and end of attack animation to signal when it is attacking
+    public void SetAttacking(int isAttacking) {
+        attacking = (isAttacking > 0) ? true : false;
     }
 
     //called at end of death animation to trigger everything else respawning
@@ -194,11 +229,25 @@ public class PlayerController : MonoBehaviour {
 
     //draws representation of the attack area when selected in the editor
     private void OnDrawGizmosSelected() {
-        if(attackRightPos != null) {
-            Gizmos.DrawWireSphere(attackRightPos.position, attackRange);
+        if(swordAttackRightPos != null) {
+            Gizmos.DrawWireSphere(swordAttackRightPos.position, swordAttackRadius);
         }
-        if(attackLeftPos != null) {
-            Gizmos.DrawWireSphere(attackLeftPos.position, attackRange);
+        if(swordAttackLeftPos != null) {
+            Gizmos.DrawWireSphere(swordAttackLeftPos.position, swordAttackRadius);
+        }
+
+        if(spearAttackRightPos != null) {
+            Gizmos.DrawWireSphere(spearAttackRightPos.position, spearAttackRadius);
+        }
+        if(spearAttackLeftPos != null) {
+            Gizmos.DrawWireSphere(spearAttackLeftPos.position, spearAttackRadius);
+        }
+
+        if(claymoreClubAttackRightPos != null) {
+            Gizmos.DrawWireSphere(claymoreClubAttackRightPos.position, claymoreClubAttackRadius);
+        }
+        if(claymoreClubAttackLeftPos != null) {
+            Gizmos.DrawWireSphere(claymoreClubAttackLeftPos.position, claymoreClubAttackRadius);
         }
     }
 }

@@ -49,7 +49,7 @@ public class ArcherEnemyController : MonoBehaviour {
     }
 
     void Update() {
-        if(/*gameManager.gameRunning &&*/ !healthManager.isDead) {
+        if(!healthManager.isDead) {
             //Set vectorToPlayer if they are within range and on level or below the archer
             if(player != null) {
                 vectorToPlayer = player.transform.position - transform.position;

@@ -21,6 +21,15 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
+    //called by Checkpoint when the player touches it for the first time
+    public void SetCheckpoint() {
+        foreach(var respawnObject in respawnableObjects) {
+            if(respawnObject.activeInHierarchy) {
+                respawnObject.GetComponent<Respawner>().SetCheckpoint();
+            }
+        }
+    }
+
     //finds all respawnable objects and tells them to respawn
     private void RespawnCheckpoint() {
         foreach(var respawnableObject in respawnableObjects) {
