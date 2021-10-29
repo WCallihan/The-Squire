@@ -12,15 +12,17 @@ public class SceneChanger : MonoBehaviour {
 
     //triggers when the player crosses the level changing threshold
     private void OnTriggerEnter2D(Collider2D collision) {
-        UpdateSavePoint(sceneToSave);
-        EndScene();
+        if(collision.CompareTag("Player")) { //double check that it is the player that touched the threshold
+            UpdateSavePoint(sceneToSave);
+            EndScene();
+        }
     }
 
     //called by the trigger collider at the end of the level or by a menu button
     public void EndScene() {
         if(endLevelTimeline != null) {
             endLevelTimeline.Play();
-        } else {
+    } else {
             StartNextScene();
         }
     }

@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour {
 
     [SerializeField] float arrowSpeed;
     public float arrowDamage; //set by ArcherEnemyController
+    public GameObject arrowRangeCollider; //set by ArcherEnemyController
 
     void Update() {
         transform.Translate(Vector3.right * Time.deltaTime * arrowSpeed);
@@ -19,7 +20,9 @@ public class Projectile : MonoBehaviour {
 
     //used to destroy the arrow when it reaches the max range set by the circle trigger collider
     private void OnTriggerExit2D(Collider2D collision) {
-        Destroy(gameObject);
+        if(collision.gameObject == arrowRangeCollider) { //does not get destroyed by other archers' arrow ranges
+            Destroy(gameObject);
+        }
     }
 
     //used to destroy the arrow if it hits anything before exiting the range
@@ -27,6 +30,8 @@ public class Projectile : MonoBehaviour {
         if(collision.gameObject.CompareTag("Player")) {
             collision.gameObject.GetComponent<HealthManager>().TakeDamage(arrowDamage);
         }
-        Destroy(gameObject);
+        if(!collision.gameObject.CompareTag("Enemy")) { //does not get destroyed by other enemies
+            Destroy(gameObject);
+        }
     }
 }

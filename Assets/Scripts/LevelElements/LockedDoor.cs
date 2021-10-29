@@ -20,7 +20,7 @@ public class LockedDoor : MonoBehaviour {
     }
 
     void Update() {
-        if(touchingPlayer && Input.GetKeyDown(KeyCode.E)) {
+        if(touchingPlayer && Input.GetKeyDown(KeyCode.E) && playerController.hasKey == true) {
             playerController.hasKey = false;
             StartCoroutine(UnlockDoor());
         }

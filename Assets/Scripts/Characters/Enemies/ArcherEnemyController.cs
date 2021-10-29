@@ -32,7 +32,8 @@ public class ArcherEnemyController : MonoBehaviour {
     [SerializeField] Transform downLeftArrowSpawn;
     [SerializeField] Transform downRightArrowSpawn;
     [SerializeField] GameObject arrowPrefab;
-    [SerializeField] float attackRange;
+    [SerializeField] float arrowRange;
+    [SerializeField] GameObject arrowRangeCollider;
     [SerializeField] LayerMask enemyLayers;
     [SerializeField] float arrowDamage;
 
@@ -54,7 +55,7 @@ public class ArcherEnemyController : MonoBehaviour {
             if(player != null) {
                 vectorToPlayer = player.transform.position - transform.position;
                 //checks if the player is in range then if they are not too far above the archer's level
-                if(vectorToPlayer.magnitude <= attackRange && vectorToPlayer.y <= 2) {
+                if(vectorToPlayer.magnitude <= arrowRange && vectorToPlayer.y <= 2) {
                     if(vectorToPlayer.y >= -1.5f) { //"on level" with the arrow, shoot sideways
                         bowDirection = 1;
                         attackAnimation = "AttackSide";
@@ -123,6 +124,7 @@ public class ArcherEnemyController : MonoBehaviour {
         SetArrowSpawnPos();
         GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPos.transform.position, arrowPrefab.transform.rotation * Quaternion.Euler(0f, 0f, arrowAngle));
         arrow.GetComponent<Projectile>().arrowDamage = arrowDamage;
+        arrow.GetComponent<Projectile>().arrowRangeCollider = arrowRangeCollider;
         audioSource.PlayOneShot(shootArrowSound);
     }
     //called at beginning and end of attack animation to signal when it is attacking
@@ -142,7 +144,7 @@ public class ArcherEnemyController : MonoBehaviour {
 
     //draws representation of the attack area when the object is selected in the editor
     private void OnDrawGizmosSelected() {
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, arrowRange);
         if(sideLeftArrowSpawn != null) {
             Gizmos.DrawWireSphere(sideLeftArrowSpawn.transform.position, 0.1f);
         }

@@ -69740,8 +69740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91248d0a9af93044fb53602740ed079a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Main Menu
-  sceneToSave: 
+  nextScene: Level 3
+  sceneToSave: Level 3
   endLevelTimeline: {fileID: 65037862}
 --- !u!4 &850849017
 Transform:

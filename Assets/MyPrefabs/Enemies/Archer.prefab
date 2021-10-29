@@ -154,7 +154,8 @@ MonoBehaviour:
   downLeftArrowSpawn: {fileID: 5498494067153655836}
   downRightArrowSpawn: {fileID: 5498494067283567093}
   arrowPrefab: {fileID: 8160657293169138889, guid: 37e959b860ae04c47aed45d883ce1e82, type: 3}
-  attackRange: 8.75
+  arrowRange: 8.75
+  arrowRangeCollider: {fileID: 0}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64

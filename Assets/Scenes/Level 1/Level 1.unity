@@ -1179,6 +1179,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5996097802208029051, guid: a698efb435420924096a42c893f7ded4, type: 3}
   m_PrefabInstance: {fileID: 5996097802128950834}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &502987178 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1832742330669055143, guid: 4fdc4e314025c834a913487e065ccd90, type: 3}
+  m_PrefabInstance: {fileID: 8218415346761380845}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -34982,6 +34987,11 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &1646864853 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6729598144710276692, guid: 4fdc4e314025c834a913487e065ccd90, type: 3}
+  m_PrefabInstance: {fileID: 8218415346761380845}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1655821850 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5138701439947142030, guid: d66f7e482fb6cb14ba8fd67475389070, type: 3}
@@ -58635,10 +58645,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 845587046, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 845587046, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135340480, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8248094621454217, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
@@ -58696,6 +58710,10 @@ PrefabInstance:
     - target: {fileID: 1423955057584062807, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
       propertyPath: m_Name
       value: Squire (NPC)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844648895881171176, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8069757516857977178, guid: 2eaa4cdc36f26fd4190d0c684792d9e5, type: 3}
       propertyPath: m_Enabled
@@ -59382,6 +59400,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8218415348784228662, guid: 4fdc4e314025c834a913487e065ccd90, type: 3}
+      propertyPath: swordAttackLeftPos
+      value: 
+      objectReference: {fileID: 502987178}
+    - target: {fileID: 8218415348784228662, guid: 4fdc4e314025c834a913487e065ccd90, type: 3}
+      propertyPath: swordAttackRightPos
+      value: 
+      objectReference: {fileID: 1646864853}
     - target: {fileID: 8218415348784228663, guid: 4fdc4e314025c834a913487e065ccd90, type: 3}
       propertyPath: m_FlipX
       value: 1

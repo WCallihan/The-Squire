@@ -27,9 +27,10 @@ public class Boulder : MonoBehaviour {
             boulderAnimator.SetTrigger("Destroy");
             boulderAnimator.SetBool("Destroyed", true);
             audioSource.PlayOneShot(destroySound);
+
+            if(boulderCollider != null)
+                boulderCollider.enabled = false;
         }
-        if(boulderCollider != null)
-            boulderCollider.enabled = false;
     }
 
     //called by Respawner when the player respawns
