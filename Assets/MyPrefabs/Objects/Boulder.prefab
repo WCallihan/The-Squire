@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 3716346140345544822}
   - component: {fileID: 3669608053876725123}
   - component: {fileID: 3669608053876725122}
-  - component: {fileID: 3669608053876725121}
   - component: {fileID: 2592836765808377992}
   m_Layer: 9
   m_Name: Boulder
@@ -181,7 +180,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,54 +201,6 @@ PolygonCollider2D:
       - {x: -9.05166, y: 3.7618718}
       - {x: -6.5674343, y: 0.011786342}
       - {x: 6.5715723, y: 0.005302429}
---- !u!66 &3669608053876725121
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669608053876725127}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 3669608053876725122}
-    m_ColliderPaths:
-    - - X: 11341676
-        Y: 3128069
-      - X: 11341676
-        Y: 12486694
-      - X: 8224716
-        Y: 16386080
-      - X: -8975092
-        Y: 16389582
-      - X: -11314574
-        Y: 12102890
-      - X: -11314574
-        Y: 4702340
-      - X: -8209293
-        Y: 14732
-      - X: 8214465
-        Y: 6628
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 1.1341677, y: 0.3128069}
-      - {x: 1.1341677, y: 1.2486694}
-      - {x: 0.8224716, y: 1.638608}
-      - {x: -0.8975092, y: 1.6389582}
-      - {x: -1.1314574, y: 1.210289}
-      - {x: -1.1314574, y: 0.470234}
-      - {x: -0.8209293, y: 0.0014732}
-      - {x: 0.82144654, y: 0.0006628}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0
 --- !u!82 &2592836765808377992
 AudioSource:
   m_ObjectHideFlags: 0

@@ -24,7 +24,9 @@ public class Respawner : MonoBehaviour {
     public void SetCheckpoint() {
         startingPosition = transform.position;
         respawnPosition = startingPosition;
-        spriteFlipped = spriteRenderer.flipX;
+        if(spriteRenderer != null) { //clause for stuff like the breakable bridge
+            spriteFlipped = spriteRenderer.flipX;
+        }
     }
 
     //called by LevelManager when the player dies and respawns; puts everything back to where it was at the last checkpoint
@@ -33,7 +35,9 @@ public class Respawner : MonoBehaviour {
         if(objectRb != null)
             objectRb.velocity = Vector3.zero;
         transform.position = respawnPosition;
-        spriteRenderer.flipX = spriteFlipped;
+        if(spriteRenderer != null) { //clause for stuff like the breakable bridge
+            spriteRenderer.flipX = spriteFlipped;
+        }
 
         //targets npc enemies that need to be respawned
         HealthManager healthScript = GetComponent<HealthManager>();
