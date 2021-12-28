@@ -12,6 +12,7 @@ public class Respawner : MonoBehaviour {
 
     private Vector3 startingPosition;
     private Vector3 respawnPosition;
+    private Quaternion startingRotation;
     private SpriteRenderer spriteRenderer;
     private bool spriteFlipped;
 
@@ -24,6 +25,7 @@ public class Respawner : MonoBehaviour {
     public void SetCheckpoint() {
         startingPosition = transform.position;
         respawnPosition = startingPosition;
+        startingRotation = transform.rotation;
         if(spriteRenderer != null) { //clause for stuff like the breakable bridge
             spriteFlipped = spriteRenderer.flipX;
         }
@@ -32,9 +34,10 @@ public class Respawner : MonoBehaviour {
     //called by LevelManager when the player dies and respawns; puts everything back to where it was at the last checkpoint
     public void Respawn() {
         Rigidbody2D objectRb = gameObject.GetComponent<Rigidbody2D>();
-        if(objectRb != null)
+        if(objectRb != null && objectRb.bodyType != RigidbodyType2D.Static) //if the rigidbody on the object is not static, then reset velocity
             objectRb.velocity = Vector3.zero;
         transform.position = respawnPosition;
+        transform.rotation = startingRotation;
         if(spriteRenderer != null) { //clause for stuff like the breakable bridge
             spriteRenderer.flipX = spriteFlipped;
         }

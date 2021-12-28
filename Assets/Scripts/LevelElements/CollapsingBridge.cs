@@ -24,6 +24,7 @@ public class CollapsingBridge : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject == breakingObject) {
             collision.gameObject.SetActive(false);
+            StartCoroutine(DelayDeactivation());
         }
     }
 
