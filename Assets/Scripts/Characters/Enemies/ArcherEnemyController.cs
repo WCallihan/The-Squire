@@ -54,8 +54,8 @@ public class ArcherEnemyController : MonoBehaviour {
             //Set vectorToPlayer if they are within range and on level or below the archer
             if(player != null) {
                 vectorToPlayer = player.transform.position - transform.position;
-                //checks if the player is in range then if they are not too far above the archer's level
-                if(vectorToPlayer.magnitude <= arrowRange && vectorToPlayer.y <= 2) {
+                //checks if the player is in range then if they are not too far above the archer's level; also makes sure the player isn't dead
+                if(vectorToPlayer.magnitude <= arrowRange && vectorToPlayer.y <= 2 && !player.GetComponent<HealthManager>().isDead) {
                     if(vectorToPlayer.y >= -1.5f) { //"on level" with the arrow, shoot sideways
                         bowDirection = 1;
                         attackAnimation = "AttackSide";

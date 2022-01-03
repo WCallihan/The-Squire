@@ -52,7 +52,8 @@ public class MeleeEnemyController : MonoBehaviour {
             //Set moveVector to the next patrol waypoint or player if within patrol range
             if(player != null && //if a player enemy is assigned
                 (player.transform.position.x >= patrolLeftPos.x - attackDistance && player.transform.position.x <= patrolRightPos.x + attackDistance) && //if the player is between the patrol points
-                (Mathf.Abs(player.transform.position.y - transform.position.y)) <= 3f) //if the player is on the same level or is jumping/falling
+                (Mathf.Abs(player.transform.position.y - transform.position.y)) <= 3f && //if the player is on the same level or is jumping/falling
+                (!player.GetComponent<HealthManager>().isDead)) //if the player is not dead
                 {
                 moveVector = new Vector2(player.transform.position.x - transform.position.x, 0);
                 followingPlayer = true;

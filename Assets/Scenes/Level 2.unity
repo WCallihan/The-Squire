@@ -25534,12 +25534,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238272936}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2, y: -0.28, z: -3}
-  m_LocalScale: {x: 1.2895, y: 1.2895, z: 1.2895}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.78686476, y: -2.133019, z: 586.17706}
+  m_LocalScale: {x: 3.1463802, y: 3.1463802, z: 1.2895}
   m_Children: []
-  m_Father: {fileID: 1456236308}
-  m_RootOrder: 0
+  m_Father: {fileID: 1809049815}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &238272938
 SpriteRenderer:
@@ -25819,12 +25819,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329982081}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6923997, y: 0.3295, z: -1}
-  m_LocalScale: {x: 1.2895, y: 1.2895, z: 1.2895}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.294591, y: -0.6458392, z: 588.17706}
+  m_LocalScale: {x: 3.1463802, y: 3.1463802, z: 1.2895}
   m_Children: []
-  m_Father: {fileID: 1456236308}
-  m_RootOrder: 2
+  m_Father: {fileID: 1809049815}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &329982083
 SpriteRenderer:
@@ -69487,12 +69487,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836940435}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.36, y: 0.41, z: -2}
-  m_LocalScale: {x: 1.2895, y: 1.2895, z: 1.2895}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.39646482, y: -0.44941902, z: 587.17706}
+  m_LocalScale: {x: 3.1463802, y: 3.1463802, z: 1.2895}
   m_Children: []
-  m_Father: {fileID: 1456236308}
-  m_RootOrder: 1
+  m_Father: {fileID: 1809049815}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &836940437
 SpriteRenderer:
@@ -72729,7 +72729,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1456236308}
-  - component: {fileID: 1456236307}
   - component: {fileID: 1456236306}
   m_Layer: 0
   m_Name: Background Sky
@@ -72789,21 +72788,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1456236307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1456236305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e263c63a417e943ad56fad0b6d7aa7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 1520810562}
-  parallaxFactor: 0.981
-  Level1: 0
 --- !u!4 &1456236308
 Transform:
   m_ObjectHideFlags: 0
@@ -72811,15 +72795,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1456236305}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.714865, y: -1.4498191, z: 589.17706}
   m_LocalScale: {x: 2.44, y: 2.44, z: 1}
-  m_Children:
-  - {fileID: 238272937}
-  - {fileID: 836940436}
-  - {fileID: 329982082}
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Children: []
+  m_Father: {fileID: 1809049815}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1520810560
 GameObject:
@@ -73779,6 +73760,40 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1809049814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809049815}
+  m_Layer: 0
+  m_Name: Art
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1809049815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809049814}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.714865, y: 1.3, z: -579.17706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1456236308}
+  - {fileID: 238272937}
+  - {fileID: 836940436}
+  - {fileID: 329982082}
+  m_Father: {fileID: 1920581865}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1905307744
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -73821,6 +73836,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5996097802208029051, guid: a698efb435420924096a42c893f7ded4, type: 3}
   m_PrefabInstance: {fileID: 1905307744}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1920581863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1920581865}
+  - component: {fileID: 1920581864}
+  m_Layer: 0
+  m_Name: Parallax Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1920581864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920581863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e263c63a417e943ad56fad0b6d7aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1520810562}
+  parallaxFactor: 0.981
+  Level1: 0
+--- !u!4 &1920581865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920581863}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.000375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1809049815}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1936927242
 GameObject:
   m_ObjectHideFlags: 0
