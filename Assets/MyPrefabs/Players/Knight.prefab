@@ -403,7 +403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5178978839803474854}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3905001, y: 0.2614327, z: 0}
+  m_LocalPosition: {x: 0.92, y: 0.2614327, z: 0}
   m_LocalScale: {x: 4.4999995, y: 4.4999995, z: 1}
   m_Children: []
   m_Father: {fileID: 3739254742563541759}
@@ -523,7 +523,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5819460494799950766}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3905001, y: 0.2614327, z: 0}
+  m_LocalPosition: {x: -0.92, y: 0.2614327, z: 0}
   m_LocalScale: {x: 4.4999995, y: 4.4999995, z: 1}
   m_Children: []
   m_Father: {fileID: 3739254742563541759}
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 601801856}
   - component: {fileID: 2772084102466300510}
   m_Layer: 6
-  m_Name: HeroKnight
+  m_Name: Knight
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,7 +623,7 @@ MonoBehaviour:
   hasKey: 0
   swordAttackLeftPos: {fileID: 1832742330669055143}
   swordAttackRightPos: {fileID: 6729598144710276692}
-  swordAttackRadius: 0.5
+  swordAttackRadius: 1.3
   spearAttackLeftPos: {fileID: 0}
   spearAttackRightPos: {fileID: 0}
   spearAttackRadius: 0.5

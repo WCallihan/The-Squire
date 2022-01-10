@@ -26,18 +26,23 @@ public class HUDManager : MonoBehaviour {
         healthBar.maxValue = healthManager.maxHealth;
     }
 
+    //manages the health bar and key indicators if they exist
     void LateUpdate() {
-        healthBar.value = healthManager.currentHealth;
-        keyIndicator.SetActive(playerController.hasKey);
+        if(healthBar != null)
+            healthBar.value = healthManager.currentHealth;
+        if(keyIndicator != null)
+            keyIndicator.SetActive(playerController.hasKey);
     }
 
-    //updates the indicator and plays the equip sfx of the currently selected weapon; gets called by PlayerCOntroller when weapons are changed
+    //updates the indicator and plays the equip sfx of the currently selected weapon; gets called by PlayerController when weapons are changed
     public void UpdateWeaponSelected(WeaponType newWeapon) {
-        if(currentWeaponIndicator != newWeapon) {
-            weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(false); //deactivates old indicator
-            currentWeaponIndicator = newWeapon;
-            weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(true); //activates new indicator
-            audioSource.PlayOneShot(weaponSelectedSounds[(int)currentWeaponIndicator], 0.2f);
+        if(playerController != null) {
+            if(currentWeaponIndicator != newWeapon) {
+                weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(false); //deactivates old indicator
+                currentWeaponIndicator = newWeapon;
+                weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(true); //activates new indicator
+                audioSource.PlayOneShot(weaponSelectedSounds[(int)currentWeaponIndicator], 0.2f);
+            }
         }
     }
 }

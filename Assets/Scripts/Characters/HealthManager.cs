@@ -38,6 +38,12 @@ public class HealthManager : MonoBehaviour {
                 isDead = true;
                 animator.SetBool("Dead", true); //all characters that use this script must have same boolean name
             }
+
+            //stuns the wizard, and only the wizard, when he takes damage
+            WizardController wizCont = GetComponent<WizardController>();
+            if(wizCont != null) {
+                wizCont.attackCooldown = 3;
+            }
         }
     }
 

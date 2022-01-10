@@ -1580,7 +1580,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 519420031}
   parallaxFactor: 0.85
-  Level1: 0
 --- !u!4 &823152964
 Transform:
   m_ObjectHideFlags: 0
@@ -4332,7 +4331,7 @@ GameObject:
   - component: {fileID: 872535095}
   - component: {fileID: 872535097}
   m_Layer: 0
-  m_Name: TimelineManager
+  m_Name: LevelFadeOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

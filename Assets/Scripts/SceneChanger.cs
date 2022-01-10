@@ -22,7 +22,7 @@ public class SceneChanger : MonoBehaviour {
     public void EndScene() {
         if(endLevelTimeline != null) {
             endLevelTimeline.Play();
-    } else {
+        } else {
             StartNextScene();
         }
     }
@@ -60,7 +60,7 @@ public class SceneChanger : MonoBehaviour {
 
     //used by the new game option at the menu
     public void DeleteProgress() {
-        PlayerPrefs.SetString("LevelToLoad", "Opening Cutscene");
+        PlayerPrefs.SetString("LevelToLoad", "Level 1 Opening Cutscene");
             //TO DO: reset player prefs for which levels can be selected specifically
     }
 }

@@ -1038,7 +1038,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &411893257
 PrefabInstance:
@@ -2141,8 +2141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91248d0a9af93044fb53602740ed079a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: Level 4
-  sceneToSave: Level 4
+  nextScene: Level 4 Opening Cutscene
+  sceneToSave: Level 4 Opening Cutscene
   endLevelTimeline: {fileID: 1412883193}
 --- !u!68 &701427689
 EdgeCollider2D:
@@ -2178,7 +2178,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &741416713
 GameObject:
@@ -64073,7 +64073,7 @@ GameObject:
   - component: {fileID: 1412883193}
   - component: {fileID: 1412883192}
   m_Layer: 0
-  m_Name: TimelineManager
+  m_Name: LevelFadeOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83131,7 +83131,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1950637098 stripped
 GameObject:

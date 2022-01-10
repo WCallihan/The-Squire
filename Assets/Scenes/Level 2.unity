@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 65037862}
   - component: {fileID: 65037864}
   m_Layer: 0
-  m_Name: TimelineManager
+  m_Name: LevelFadeOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25659,7 +25659,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &262344252
 MonoBehaviour:
@@ -26506,7 +26506,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &529296228
 GameObject:
@@ -69612,7 +69612,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851218736
 GameObject:
@@ -73867,7 +73867,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1520810562}
   parallaxFactor: 0.981
-  Level1: 0
 --- !u!4 &1920581865
 Transform:
   m_ObjectHideFlags: 0
