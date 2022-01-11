@@ -60,15 +60,16 @@ public class WizardController : MonoBehaviour {
                 //checks if the player is in range and makes sure the player isn't dead
                 if(vectorToPlayer.magnitude <= fireRange && !player.GetComponent<HealthManager>().isDead) {
                     playerInRange = true;
-                } else if(player.GetComponent<HealthManager>().isDead) { //if the player is dead and going to be respawned, then go back to fleeing
+                } else if(player.GetComponent<HealthManager>().isDead) { //if the player is dead and going to be respawned, then go back to fleeing and reset health threshold
                     fleeing = true;
+                    nextHealthThreshold = 20;
                     playerInRange = false;
                 } else {
                 playerInRange = false;
             }
             }
 
-            //Swap direction of sprite depending on direction to player
+            //swap direction of sprite depending on direction to player
             if(playerInRange && vectorToPlayer.x > 0) { //facing right
                 GetComponent<SpriteRenderer>().flipX = true;
                 facingDirection = 1;
@@ -111,6 +112,9 @@ public class WizardController : MonoBehaviour {
             animator.SetInteger("AnimState", 0); //idle when the player dies/game is not running
         }
     }
+
+    // -- ATTACKING --
+
     //called by the attack animation at proper frame
     public void AttackTrigger() {
         Attack(facingDirection);
@@ -129,12 +133,16 @@ public class WizardController : MonoBehaviour {
             if(enemiesToDamage != null)
                 enemy.GetComponent<HealthManager>().TakeDamage(fireDamage);
         }
-        audioSource.PlayOneShot(attackSound);
+        if(audioSource != null) {
+            audioSource.PlayOneShot(attackSound);
+        }
     }
     //called at beginning and end of attack animation to signal when it is attacking
     public void SetAttacking(int isAttacking) {
         attacking = (isAttacking > 0);
     }
+
+    // -- TELEPORTING --
 
     //teleport to random teleport location out of the given list until the wizard has teleported the max amount of times and then teleport to safety and stop fleeing
     public void RandomTeleport() {
@@ -197,11 +205,14 @@ public class WizardController : MonoBehaviour {
         audioSource.PlayOneShot(teleportSound);
     }
 
+    // -- MISC. --
+
     //called when the wizard dies; triggers the end of the scene
     public IEnumerator Die() {
         SetAttacking(0);
         yield return new WaitForSeconds(5);
         if(healthManager.isDead) { //makes sure it hasn't respawned in that time
+            FindObjectOfType<SceneChanger>().UnlockLevel("Level 4"); //unlocks level 4
             FindObjectOfType<SceneChanger>().EndScene(); //ends scene
         }
     }

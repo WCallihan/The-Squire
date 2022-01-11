@@ -18,6 +18,8 @@ public class SceneChanger : MonoBehaviour {
         }
     }
 
+    // -- ENDING SCENES --
+
     //called by the trigger collider at the end of the level or by a menu button
     public void EndScene() {
         if(endLevelTimeline != null) {
@@ -51,6 +53,19 @@ public class SceneChanger : MonoBehaviour {
             Debug.Log("No Scene To Save Given");
             PlayerPrefs.SetString("LevelToLoad", SceneManager.GetActiveScene().name); //defaults to save the current scene as what should be loaded
         }
+        UnlockLevel(SceneManager.GetActiveScene().name); //unlocks the level that was just completed
+    }
+
+    //used at the end of levels to unlock the level; called by UpdateSavePoint and WizardController as part of its Die method
+    public void UnlockLevel(string unlockedScene) {
+        if(unlockedScene.Equals("Level 1"))
+            PlayerPrefs.SetInt("Level1Unlocked", 1);
+        else if(unlockedScene.Equals("Level 2"))
+            PlayerPrefs.SetInt("Level2Unlocked", 1);
+        if(unlockedScene.Equals("Level 3"))
+            PlayerPrefs.SetInt("Level3Unlocked", 1);
+        if(unlockedScene.Equals("Level 4")) //triggered when the wizard dies
+            PlayerPrefs.SetInt("Level4Unlocked", 1);
     }
 
     //used by the continue option at the menu
@@ -60,7 +75,10 @@ public class SceneChanger : MonoBehaviour {
 
     //used by the new game option at the menu
     public void DeleteProgress() {
-        PlayerPrefs.SetString("LevelToLoad", "Level 1 Opening Cutscene");
-            //TO DO: reset player prefs for which levels can be selected specifically
+        PlayerPrefs.SetString("LevelToLoad", "Level 1 Opening Cutscene"); //sets the next level to be done as level 1
+        PlayerPrefs.SetInt("Level1Unlocked", 0); //resets all saved level completions
+        PlayerPrefs.SetInt("Level2Unlocked", 0);
+        PlayerPrefs.SetInt("Level3Unlocked", 0);
+        PlayerPrefs.SetInt("Level4Unlocked", 0);
     }
 }

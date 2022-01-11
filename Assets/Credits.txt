@@ -1,13 +1,11 @@
-Pixel 2D Castle Tileset (Level 1)- Szadi Art
-Hero Knight Player Character Sprites- Luiz Melo
-Sidekick Player Character Sprites- Luiz Melo
-Enemy Sprites- Szadi Art
-Evil Wizard Sprites- Luiz Melo
-Pixel Fantasy Caves- Szadi Art
-Platformer Fantasy Set1- Szadi Art
-Platformer Set- Szadi Art
-Pixel Dark Forest- Szadi Art
-Health Bar Sprites- Brackeys
+Base Character and Enemy Code - Luiz Melo
+Knight and Squire Sprites - Luiz Melo
+Wizard Sprites - Luiz Melo
+Enemy Sprites - Szadi Art
+Level Sprites and Art - Szadi Art
+Health Bar Sprites - Brackeys
 Tripfive Font- PixelMush
+Music - CodeManu and VOID1 Gaming
 Sound Effects- SF Audio Guild, Potion Audio, and Idia Software LLC
-Music- CodeManu and VOID1 Gaming
+
+All assets were taken from the Unity Asset Store or from publicly available sources.
