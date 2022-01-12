@@ -9,9 +9,9 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour {
 
-    [SerializeField] WeaponType weaponNeeded;
+    [SerializeField] WeaponType weaponNeeded = WeaponType.Spear; //weapon type needed to destroy the rope
     [SerializeField] AudioClip destroySound;
-    [SerializeField] GameObject[] connectedRopes;
+    [SerializeField] GameObject[] connectedRopes; //array of any other rope objects that are "connected" to this rope
     private AudioSource audioSource;
 
     void Start() {
@@ -21,17 +21,19 @@ public class Rope : MonoBehaviour {
     //called by Destructible when the player hits the rope
     public void DestroyRope(WeaponType weaponUsed) {
         if(weaponUsed == weaponNeeded) {
+            //deactivates any connected ropes
             if(connectedRopes != null)
                 foreach(var connection in connectedRopes)
                     connection.gameObject.SetActive(false);
+            //deactivates the rope
             StartCoroutine(DelayDeactivation());
         }
     }
     //makes sure the object waits until the sound effect is done playing to set the rope as not active
     private IEnumerator DelayDeactivation() {
-        audioSource.PlayOneShot(destroySound);
-        yield return new WaitWhile(() => audioSource.isPlaying);
-        gameObject.SetActive(false);
+        audioSource.PlayOneShot(destroySound); //play sound effect
+        yield return new WaitWhile(() => audioSource.isPlaying); //wait until the sound effect is over
+        gameObject.SetActive(false); //deactivate the rope
     }
 
     //respawn completely handled by LevelManager

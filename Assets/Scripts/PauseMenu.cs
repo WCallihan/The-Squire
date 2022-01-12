@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 
+/* Used by the LevelManager objects:
+ * manages the pause menu in each scene including actiivating and deactivating it and
+ * pausing the game when it is active
+ */
+
 public class PauseMenu : MonoBehaviour {
 
     [SerializeField] GameObject pauseMenu;
@@ -26,24 +31,24 @@ public class PauseMenu : MonoBehaviour {
     //resumes the game when paused; also called by the resume button
     public void Resume() {
         if(musicPlayer != null)
-            musicPlayer.Play();
+            musicPlayer.Play(); //resumes the music
         if(activeTimeline != null)
-            activeTimeline.Play();
+            activeTimeline.Play(); //resumes the cutscene (if applicable)
 
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+        pauseMenu.SetActive(false); //deactivates the pause menu
+        Time.timeScale = 1f; //resumes the scene
         gamePaused = false;
     }
 
     //pauses the game when it is playing and the pause button is pressed
     public void Pause() {
         if(musicPlayer != null)
-            musicPlayer.Pause();
+            musicPlayer.Pause(); //pauses the music
         if(activeTimeline != null)
-            activeTimeline.Pause();
+            activeTimeline.Pause(); //pauses the cutscene (if applicable)
 
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
+        pauseMenu.SetActive(true); //activates the pause menu
+        Time.timeScale = 0f; //pauses the scene
         gamePaused = true;
     }
 
@@ -55,7 +60,7 @@ public class PauseMenu : MonoBehaviour {
 
     //ends the game; called by the quit button on pause menu
     public void QuitGame() {
-        if(UnityEditor.EditorApplication.isPlaying)
+        if(UnityEditor.EditorApplication.isPlaying) //if the game is being played in the editor, then just stop the game
             UnityEditor.EditorApplication.isPlaying = false;
         else
             Application.Quit();

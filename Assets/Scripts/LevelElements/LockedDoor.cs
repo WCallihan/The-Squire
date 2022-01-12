@@ -4,7 +4,7 @@ using UnityEngine;
 
 /* Used by the door objects:
  * detects if the player is touching the door and if they
- * interact with it holding a key, it unlocks and disappears
+ * interact with it while holding a key, it unlocks and disappears
  */
 
 public class LockedDoor : MonoBehaviour {
@@ -20,27 +20,31 @@ public class LockedDoor : MonoBehaviour {
     }
 
     void Update() {
+        //if the player is touching the door, they press e, and they have the key, then take the key and open the door
         if(touchingPlayer && Input.GetKeyDown(KeyCode.E) && playerController.hasKey == true) {
             playerController.hasKey = false;
-            StartCoroutine(UnlockDoor());
+            StartCoroutine(UnlockDoor()); //call function to unlock and deactivate the door
         }
     }
 
+    //if something collides with the door, check if it is the player
     private void OnCollisionEnter2D(Collision2D collision) {
         if(collision.gameObject.CompareTag("Player")) {
             playerController = collision.gameObject.GetComponent<PlayerController>();
-            touchingPlayer = true;
+            touchingPlayer = true; //player is touching the door
         }
     }
+    //if something stops colliding with the door, check if it is the player
     private void OnCollisionExit2D(Collision2D collision) {
         if(collision.gameObject.CompareTag("Player")) {
-            touchingPlayer = false;
+            touchingPlayer = false; //player is no longer touching the door
         }
     }
 
+    //deactivates the door after a short delay
     IEnumerator UnlockDoor() {
-        audioSource.PlayOneShot(unlockSound);
-        yield return new WaitForSeconds(1);
-        gameObject.SetActive(false);
+        audioSource.PlayOneShot(unlockSound); //play sound effect
+        yield return new WaitForSeconds(1); //wait 1 second to have the door linger
+        gameObject.SetActive(false); //deactivate the door
     }
 }

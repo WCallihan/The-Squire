@@ -4,15 +4,14 @@ using UnityEngine;
 
 /* Used by all respawnable objects:
  * manages all relevant information pertaining to an object
- * to put back into the state it was in at the last checkpoint
+ * to put it back into the state it was in at the last checkpoint
  * reached by the player (including the beginning of levels)
  */
 
 public class Respawner : MonoBehaviour {
 
-    private Vector3 startingPosition;
     private Vector3 respawnPosition;
-    private Quaternion startingRotation;
+    private Quaternion respawnRotation;
     private SpriteRenderer spriteRenderer;
     private bool spriteFlipped;
 
@@ -23,9 +22,8 @@ public class Respawner : MonoBehaviour {
 
     //called by LevelManager when the player touches a new checkpoint; also called when the level is loaded
     public void SetCheckpoint() {
-        startingPosition = transform.position;
-        respawnPosition = startingPosition;
-        startingRotation = transform.rotation;
+        respawnPosition = transform.position;
+        respawnRotation = transform.rotation;
         if(spriteRenderer != null) { //clause for stuff like the breakable bridge
             spriteFlipped = spriteRenderer.flipX;
         }
@@ -36,22 +34,21 @@ public class Respawner : MonoBehaviour {
         Rigidbody2D objectRb = gameObject.GetComponent<Rigidbody2D>();
         if(objectRb != null && objectRb.bodyType != RigidbodyType2D.Static) //if the rigidbody on the object is not static, then reset velocity
             objectRb.velocity = Vector3.zero;
-        transform.position = respawnPosition;
-        transform.rotation = startingRotation;
+        transform.SetPositionAndRotation(respawnPosition, respawnRotation); //moves the object back to the respawn position and rotation
         if(spriteRenderer != null) { //clause for stuff like the breakable bridge
             spriteRenderer.flipX = spriteFlipped;
         }
 
-        //targets npc enemies that need to be respawned
+        //targets enemies that need to be respawned
         HealthManager healthScript = GetComponent<HealthManager>();
         if(healthScript != null) {
-            healthScript.Respawn();
+            healthScript.Respawn(); //sets the enemy to not dead and increases health back to max
         }
 
         //targets the boulders that were smashed and need to be respawned
         Boulder boulderScript = GetComponent<Boulder>();
         if(boulderScript != null) {
-            boulderScript.RespawnBoulder();
+            boulderScript.RespawnBoulder(); //changes the sprite back to normal
         }
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /* Used by both player characters:
- * manages all the elements on the player's HUD
+ * manages all the elements on the player's HUD including the
+ * health bar, key indicator, and weapon selection indicators
  */
 
 public class HUDManager : MonoBehaviour {
@@ -28,8 +29,11 @@ public class HUDManager : MonoBehaviour {
 
     //manages the health bar and key indicators if they exist
     void LateUpdate() {
+        //moves the health bar up and down to reflect the player's current health
         if(healthBar != null)
             healthBar.value = healthManager.currentHealth;
+
+        //activates the key indicator to reflect if the player has the key
         if(keyIndicator != null)
             keyIndicator.SetActive(playerController.hasKey);
     }
@@ -41,7 +45,7 @@ public class HUDManager : MonoBehaviour {
                 weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(false); //deactivates old indicator
                 currentWeaponIndicator = newWeapon;
                 weaponSelectedIndicators[(int)currentWeaponIndicator].SetActive(true); //activates new indicator
-                audioSource.PlayOneShot(weaponSelectedSounds[(int)currentWeaponIndicator], 0.2f);
+                audioSource.PlayOneShot(weaponSelectedSounds[(int)currentWeaponIndicator], 0.2f); //plays weapon equip sound
             }
         }
     }

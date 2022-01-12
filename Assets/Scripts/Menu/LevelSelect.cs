@@ -16,21 +16,25 @@ public class LevelSelect : MonoBehaviour {
 
     void Awake() {
         //activates each level's button if the player prefs have them unlocked
+        //Level 1
         if(PlayerPrefs.GetInt("Level1Unlocked", 0) != 0)
             level1Unlocked.SetActive(true);
         else
             level1Unlocked.SetActive(false);
 
+        //Level 2
         if(PlayerPrefs.GetInt("Level2Unlocked", 0) != 0)
             level2Unlocked.SetActive(true);
         else
             level2Unlocked.SetActive(false);
 
+        //Level 3
         if(PlayerPrefs.GetInt("Level3Unlocked", 0) != 0)
             level3Unlocked.SetActive(true);
         else
             level3Unlocked.SetActive(false);
 
+        //Level 4
         if(PlayerPrefs.GetInt("Level4Unlocked", 0) != 0)
             level4Unlocked.SetActive(true);
         else

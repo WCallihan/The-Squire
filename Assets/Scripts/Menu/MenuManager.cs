@@ -49,13 +49,23 @@ public class MenuManager : MonoBehaviour {
 
     // -- POPUP WINDOW --
 
-    //called by the new game button
+    //called by the new game button; shows the new game popup window
     public void ShowPopup() {
         popupWindow.SetActive(true);
     }
 
-    //called by the screen changing functions and the cancel button in the popup window
+    //called by the screen changing functions and the cancel button in the popup window; closes the new game popup window
     public void HidePopup() {
         popupWindow.SetActive(false);
+    }
+
+    // -- MISC. --
+
+    //ends the game; called by the quit button
+    public void QuitGame() {
+        if(UnityEditor.EditorApplication.isPlaying) //if the game is being played in the editor, then just stop the game
+            UnityEditor.EditorApplication.isPlaying = false;
+        else
+            Application.Quit();
     }
 }

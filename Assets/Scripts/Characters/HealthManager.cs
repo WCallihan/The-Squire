@@ -4,7 +4,8 @@ using UnityEngine;
 
 /* Used by all player and enemy characters:
  * manages the character's maximum and current health and has
- * a generic function that can take damage when the character is hit
+ * a generic function that can take damage when the character is hit.
+ * also handles the stunning of the wizard.
  */
 
 public class HealthManager : MonoBehaviour {
@@ -28,10 +29,11 @@ public class HealthManager : MonoBehaviour {
     //called by an Attack function when the gameObject is hit by an attack
     public void TakeDamage(float damage) {
         if(!isDead) {
+            //take damage if it isn't already dead
             UpdateHealth(-damage);
             animator.SetTrigger("Hurt"); //all characters that use this script must have same trigger name
             if(hurtSound != null)
-                audioSource.PlayOneShot(hurtSound);
+                audioSource.PlayOneShot(hurtSound); //play hurt sound
 
             //handles death of characters; enemies have an extra function in their controllers
             if(currentHealth <= 0) {
@@ -42,7 +44,7 @@ public class HealthManager : MonoBehaviour {
             //stuns the wizard, and only the wizard, when he takes damage
             WizardController wizCont = GetComponent<WizardController>();
             if(wizCont != null) {
-                wizCont.attackCooldown = 3;
+                wizCont.attackCooldown = 4; //stun the wizard for 4 seconds
             }
         }
     }
@@ -52,7 +54,7 @@ public class HealthManager : MonoBehaviour {
         currentHealth += healthChange;
     }
 
-    //called when respawning the player and enemies after the player dies
+    //called when respawning the player and enemies after the player dies; sets the health back to max and sets dead values to false
     public void Respawn() {
         isDead = false;
         currentHealth = maxHealth;

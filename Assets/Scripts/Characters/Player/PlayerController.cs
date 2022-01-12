@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Used by both player characters:
- * manages everything to do with the player including their
- * inputs, movement, ground sensor, attacking, and sound
- * effects
+ * manages everything to do with the player including their inputs, movement,
+ * ground sensor, attacking, animations, and sound effects
  */
 
+//public enum to denote the weapon types, used by PlayerController, HUDManager, Destructible, Boulder, and Rope
 public enum WeaponType { Sword, Claymore, Spear, Club }
 
 public class PlayerController : MonoBehaviour {
@@ -16,9 +16,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float jumpForce = 7.5f;
 
     [SerializeField] AudioClip[] weaponSwingSounds;
-    public WeaponType currentWeapon = WeaponType.Sword; //unchanging on HeroKnight
-    [SerializeField] bool multipleWeapons = true; //true on Squire, false on HeroKnight
+    public WeaponType currentWeapon = WeaponType.Sword; //unchanging on Knight
+    [SerializeField] bool multipleWeapons = true; //true on Squire, false on Knight
 
+    //various scripts and components that PlayerController uses and calls
     private HealthManager healthManager;
     private HUDManager hudManager;
     private Animator animator;
@@ -34,8 +35,9 @@ public class PlayerController : MonoBehaviour {
     private bool grounded = false;
     private int facingDirection = 1;
 
-    public bool hasKey;
+    public bool hasKey; //public to be used by the LockerDoor object
 
+    //the positions and radiuses that make up the weapon hit boxes when attacking
     [SerializeField] Transform swordAttackLeftPos;
     [SerializeField] Transform swordAttackRightPos;
     [SerializeField] float swordAttackRadius = 0.5f;
@@ -45,9 +47,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] Transform claymoreClubAttackLeftPos;
     [SerializeField] Transform claymoreClubAttackRightPos;
     [SerializeField] float claymoreClubAttackRadius = 0.5f;
+    //denotes which layers can be hit by the player
     [SerializeField] LayerMask enemyLayers;
 
-    public bool playerRespawning = false;
+    public bool playerRespawning = false; //public to be used by LevelManager to trigger everything to respawn
 
     void Start() {
         healthManager = GetComponent<HealthManager>();
@@ -60,20 +63,20 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         if(!healthManager.isDead) {
-            // Increase timer that controls attack combo
-            timeSinceAttack += Time.deltaTime;
+
+            // -- MOVEMENT --
 
             //controls the grounded variable and sets the animator boolean
             grounded = groundSensor.OnGround();
             animator.SetBool("Grounded", grounded);
 
-            //Horizontal Input
+            //take in movement input
             float inputX = 0;
-            if(!attacking || !grounded) { //can move if not attacking unless in the air
+            if(!attacking || !grounded) { //cannot move if the player is attacking and is grounded
                 inputX = Input.GetAxis("Horizontal");
             }
 
-            //Swap direction of sprite depending on walk direction
+            //swap direction of sprite depending on walk direction
             if(inputX > 0) {
                 GetComponent<SpriteRenderer>().flipX = false;
                 facingDirection = 1; //facing right
@@ -82,100 +85,126 @@ public class PlayerController : MonoBehaviour {
                 facingDirection = -1; //facing left
             }
 
-            //Move
+            //move side to side
             playerRb.velocity = new Vector2(inputX * speed, playerRb.velocity.y);
 
-            //Set AirSpeed in animator
-            animator.SetFloat("AirSpeedY", playerRb.velocity.y);
+            // -- WEAPONS --
 
-            // -- Handle Animations --
-            //Change Weapons
+            //change weapons when not attacking
             if(multipleWeapons && !attacking) {
+                //1 = sword
                 if(Input.GetKeyDown(KeyCode.Alpha1)) {
                     currentWeapon = WeaponType.Sword;
                     hudManager.UpdateWeaponSelected(WeaponType.Sword);
+                //2 = claymore
                 } else if(Input.GetKeyDown(KeyCode.Alpha2)) {
                     currentWeapon = WeaponType.Claymore;
                     hudManager.UpdateWeaponSelected(WeaponType.Claymore);
+                //3 = spear
                 } else if(Input.GetKeyDown(KeyCode.Alpha3)) {
                     currentWeapon = WeaponType.Spear;
                     hudManager.UpdateWeaponSelected(WeaponType.Spear);
+                //4 = club
                 } else if(Input.GetKeyDown(KeyCode.Alpha4)) {
                     currentWeapon = WeaponType.Club;
                     hudManager.UpdateWeaponSelected(WeaponType.Club);
                 }
             }
-            //Attack
+
+            // -- ANIMATIONS --
+
+            //set AirSpeedY in animator to denote if the player is falling
+            animator.SetFloat("AirSpeedY", playerRb.velocity.y);
+
+            //increase timer that controls attack cooldown
+            timeSinceAttack += Time.deltaTime;
+
+            //attack if the attack cooldown has passed
             if(Input.GetMouseButtonDown(0) && timeSinceAttack >= attackCooldown) {
                 if(multipleWeapons)
                     animator.SetInteger("WeaponType", (int)currentWeapon); //parameter only on the Squire
-                animator.SetTrigger("Attack"); //actual attack triggered by animation
+                animator.SetTrigger("Attack"); //damage triggered by animation
                 timeSinceAttack = 0.0f; //resets attack timer
             }
 
-            //Jump
+            //jump if grounded and not attacking
             else if((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && grounded && !attacking) {
                 animator.SetTrigger("Jump");
-                playerRb.velocity = new Vector2(playerRb.velocity.x, jumpForce);
+                playerRb.velocity = new Vector2(playerRb.velocity.x, jumpForce); //set the player's y velocity to the jump force
                 groundSensor.Disable(0.2f); //sets onGround to false for 0.2 seconds
             }
 
-            //Run
+            //run if not jumping or attacking
             else if(Mathf.Abs(inputX) > Mathf.Epsilon) {
                 // Reset timer
                 delayToIdle = 0.05f;
                 animator.SetInteger("AnimState", 1);
             }
 
-            //Idle
+            //idle if not running, jumping, or attacking
             else {
-                // Prevents flickering transitions to idle
+                //prevents flickering transitions to idle
                 delayToIdle -= Time.deltaTime;
                 if(delayToIdle < 0)
                     animator.SetInteger("AnimState", 0);
             }
 
-            //Picking up pickups
+            // -- PICKUPS --
+
+            //pick up the pickup that the player is touching if there is one
             if(Input.GetKeyDown(KeyCode.E) && touchingPickup != null) {
-                PickupType currentPickup = touchingPickup.gameObject.GetComponent<Pickups>().pickupType;
-                audioSource.PlayOneShot(touchingPickup.gameObject.GetComponent<Pickups>().pickupSound);
+                PickupType currentPickup = touchingPickup.gameObject.GetComponent<Pickups>().pickupType; //takes the pickup's type
+                audioSource.PlayOneShot(touchingPickup.gameObject.GetComponent<Pickups>().pickupSound); //plays the pickup's sound effect
+                //if the pickup if a key, then give the player the key
                 if(currentPickup == PickupType.Key) {
                     hasKey = true;
-                    touchingPickup.gameObject.SetActive(false);
+                    touchingPickup.gameObject.SetActive(false); //deactivates the pickup so it can't be picked up again
                 }
             }
         }
     }
 
-    //Pickup and Obstacle Collisions
+    // -- COLLISIONS --
+
+    //pickup and obstacle collisions
     private void OnTriggerEnter2D(Collider2D collision) {
+        //detects a pickup
         if(collision.CompareTag("Pickup")) {
             touchingPickup = collision;
+        //detects collision with an obstacle (spikes) and deals damage to kill the player
         } else if(collision.CompareTag("Obstacle")) {
             healthManager.TakeDamage(100);
+        //goes through a falling cutoff; tell the camera follow to stop following so it will trigger a respawn
         } else if(collision.CompareTag("Falling Cutoff")) {
             CameraFollow mainCameraFollow = GameObject.FindObjectOfType<CameraFollow>();
             if(mainCameraFollow != null) {
-                mainCameraFollow.playerFall();
+                mainCameraFollow.playerFall(); //triggers everything to respawn as if the player died
             }
         }
     }
+    //exiting the pickup collider
     private void OnTriggerExit2D(Collider2D collision) {
+        //no longer touching the pickup
         if(collision.CompareTag("Pickup")) {
             touchingPickup = null;
         }
     }
 
-    //called by the animation at proper moment in attack animation; calls Attack and launches projectiles
+    // -- ATTACKING --
+
+    //called by the attack animation at proper frame in attack animation; calls Attack to damage any enemies in the weapon's hitbox
     public void AttackTrigger() {
         Attack(currentWeapon, facingDirection);
     }
-    //called by AttackTrigger to deal damage, animation handled above
+    //called by AttackTrigger to deal damage; animation handled above
     public void Attack(WeaponType currentWeapon, int facingDirection) {
         Collider2D[] enemiesToDamage = null;
-        Transform attackPos = swordAttackRightPos;
-        float attackRadius = swordAttackRadius;
-        float damage = 1;
+        //initialize required variables to useless values
+        Transform attackPos = null;
+        float attackRadius = 0f;
+        float damage = 0;
+        //set attackPos, radius, and damage depending on the current weapon and the facingDirection
+        //sword
         if(currentWeapon == WeaponType.Sword) {
             if(facingDirection == 1) //facing right
                 attackPos = swordAttackRightPos;
@@ -183,13 +212,20 @@ public class PlayerController : MonoBehaviour {
                 attackPos = swordAttackLeftPos;
             attackRadius = swordAttackRadius;
             damage = 1;
-        } else if(currentWeapon == WeaponType.Claymore) {
+        //claymore or club
+        } else if(currentWeapon == WeaponType.Claymore || currentWeapon == WeaponType.Club) {
+            //claymore and club share weapon hitboxes
             if(facingDirection == 1) //facing right
                 attackPos = claymoreClubAttackRightPos;
             else if(facingDirection == -1) //facing left
                 attackPos = claymoreClubAttackLeftPos;
             attackRadius = claymoreClubAttackRadius;
-            damage = 3;
+            //claymore and club do different damage
+            if(currentWeapon == WeaponType.Claymore)
+                damage = 3;
+            else if(currentWeapon == WeaponType.Club)
+                damage = 2;
+        //spear
         } else if(currentWeapon == WeaponType.Spear) {
             if(facingDirection == 1) //facing right
                 attackPos = spearAttackRightPos;
@@ -197,28 +233,26 @@ public class PlayerController : MonoBehaviour {
                 attackPos = spearAttackLeftPos;
             attackRadius = spearAttackRadius;
             damage = 0.5f;
-        } else if(currentWeapon == WeaponType.Club) {
-            if(facingDirection == 1) //facing right
-                attackPos = claymoreClubAttackRightPos;
-            else if(facingDirection == -1) //facing left
-                attackPos = claymoreClubAttackLeftPos;
-            attackRadius = claymoreClubAttackRadius;
-            damage = 2;
         }
         
+        //determine who is in attack hitbox and damage each of them
         enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, enemyLayers); //makes array of anyone in the enemyLayers layer mask within the created circle (center point, radius, layer)
         foreach(Collider2D enemy in enemiesToDamage) {
+            //if the target is an enemy, make them take damage
             if(enemy.CompareTag("Enemy"))
                 enemy.GetComponent<HealthManager>().TakeDamage(damage);
+            //if the target is a destructible, attempt to destroy it
             else if(enemy.CompareTag("Destructible"))
                 enemy.GetComponent<Destructible>().DestroyObject(currentWeapon);
         }
-        audioSource.PlayOneShot(weaponSwingSounds[(int)currentWeapon]);
+        audioSource.PlayOneShot(weaponSwingSounds[(int)currentWeapon]); //play weapon's attack sound
     }
     //called at beginning and end of attack animation to signal when it is attacking
     public void SetAttacking(int isAttacking) {
-        attacking = (isAttacking > 0) ? true : false;
+        attacking = (isAttacking > 0); //converts int to bool
     }
+
+    // -- MISC. --
 
     //called at end of death animation to trigger everything else respawning
     public void BeginRespawn() {
@@ -226,9 +260,9 @@ public class PlayerController : MonoBehaviour {
         hasKey = false;
     }
 
-
     //draws representation of the attack area when selected in the editor
     private void OnDrawGizmosSelected() {
+        //draw sword hitboxes
         if(swordAttackRightPos != null) {
             Gizmos.DrawWireSphere(swordAttackRightPos.position, swordAttackRadius);
         }
@@ -236,18 +270,20 @@ public class PlayerController : MonoBehaviour {
             Gizmos.DrawWireSphere(swordAttackLeftPos.position, swordAttackRadius);
         }
 
-        if(spearAttackRightPos != null) {
-            Gizmos.DrawWireSphere(spearAttackRightPos.position, spearAttackRadius);
-        }
-        if(spearAttackLeftPos != null) {
-            Gizmos.DrawWireSphere(spearAttackLeftPos.position, spearAttackRadius);
-        }
-
+        //draw claymore and club hitboxes
         if(claymoreClubAttackRightPos != null) {
             Gizmos.DrawWireSphere(claymoreClubAttackRightPos.position, claymoreClubAttackRadius);
         }
         if(claymoreClubAttackLeftPos != null) {
             Gizmos.DrawWireSphere(claymoreClubAttackLeftPos.position, claymoreClubAttackRadius);
+        }
+
+        //draw spear hitboxes
+        if(spearAttackRightPos != null) {
+            Gizmos.DrawWireSphere(spearAttackRightPos.position, spearAttackRadius);
+        }
+        if(spearAttackLeftPos != null) {
+            Gizmos.DrawWireSphere(spearAttackLeftPos.position, spearAttackRadius);
         }
     }
 }

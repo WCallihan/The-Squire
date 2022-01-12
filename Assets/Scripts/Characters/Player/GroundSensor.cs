@@ -9,7 +9,6 @@ using System.Collections;
 public class GroundSensor : MonoBehaviour {
 
     private int collisionCount = 0; //counts the number of colliders the sensor is touching
-
     private float disableTimer;
 
     private void OnEnable() {
@@ -23,12 +22,14 @@ public class GroundSensor : MonoBehaviour {
         return collisionCount > 0;
     }
 
+    //increases collision count every time the sensor enters another collider
     void OnTriggerEnter2D(Collider2D other) {
         if(!other.gameObject.CompareTag("Enemy")) { //makes sure the player can't jump off enemies or archer ranges
             collisionCount++;
         }
     }
 
+    //decreases collision count every time the sensor exits another collider
     void OnTriggerExit2D(Collider2D other) {
         if(!other.gameObject.CompareTag("Enemy")) { //makes sure the player can't jump off enemies or archer ranges
             collisionCount--;
@@ -40,7 +41,8 @@ public class GroundSensor : MonoBehaviour {
         disableTimer -= Time.deltaTime;
     }
 
-    //disbales the on ground sensor for a short duration to guarentee immediate reading of not grounded
+    //called by PlayerController when the player jumps
+    //disbales the ground sensor for a short duration to guarentee immediate reading of not grounded
     public void Disable(float duration) {
         disableTimer = duration;
     }

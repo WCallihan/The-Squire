@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class TeleportEffect : MonoBehaviour {
 
-    //is called by the effect animation when it is done to despawn the object
+    //called by the effect animation when it is done to despawn the object
     public void TriggerEffectOver() {
         Destroy(gameObject);
     }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Used only by the archer enemy characters:
- * manages everything to do with the archer enemy including
- * their attacking, look direction, detecting the player's location,
+ * manages everything to do with the archer enemy including their attacking,
+ * look direction, detecting the player's location, animations,
  * spawning their arrow projectiles, and sound effects
  */
 
@@ -18,7 +18,6 @@ public class ArcherEnemyController : MonoBehaviour {
     [SerializeField] GameObject player;
     private HealthManager healthManager;
     private Animator animator;
-    private Rigidbody2D enemyRb;
     private AudioSource audioSource;
 
     private bool attacking = false;
@@ -27,14 +26,15 @@ public class ArcherEnemyController : MonoBehaviour {
     private int facingDirection = 1;
     private int bowDirection = 1;
 
+    //variables that determine the spawn locations of the arrows depending on where it is trying to shoot
     [SerializeField] Transform sideLeftArrowSpawn;
     [SerializeField] Transform sideRightArrowSpawn;
     [SerializeField] Transform downLeftArrowSpawn;
     [SerializeField] Transform downRightArrowSpawn;
-    [SerializeField] GameObject arrowPrefab;
+    [SerializeField] GameObject arrowPrefab; //arrow prefab to be spawned when attacking
     [SerializeField] float arrowRange;
-    [SerializeField] GameObject arrowRangeCollider;
-    [SerializeField] LayerMask enemyLayers;
+    [SerializeField] GameObject arrowRangeCollider; //collider used to stop arrows from exceeding their range
+    [SerializeField] LayerMask enemyLayers; //denotes which layers can be hit
     [SerializeField] float arrowDamage;
 
     private Transform arrowSpawnPos;
@@ -44,23 +44,24 @@ public class ArcherEnemyController : MonoBehaviour {
     void Start() {
         healthManager = GetComponent<HealthManager>();
         animator = GetComponent<Animator>();
-        enemyRb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
-        //audioSource.volume = PlayerPrefs.GetFloat("EffectsVolume", 1);
     }
 
     void Update() {
         if(!healthManager.isDead) {
-            //Set vectorToPlayer if they are within range and on level or below the archer
+
+            // -- ORIENTATION --
+
+            //set vectorToPlayer if they are within range and on level or below the archer
             if(player != null) {
                 vectorToPlayer = player.transform.position - transform.position;
                 //checks if the player is in range then if they are not too far above the archer's level; also makes sure the player isn't dead
                 if(vectorToPlayer.magnitude <= arrowRange && vectorToPlayer.y <= 2 && !player.GetComponent<HealthManager>().isDead) {
-                    if(vectorToPlayer.y >= -1.5f) { //"on level" with the arrow, shoot sideways
-                        bowDirection = 1;
+                    if(vectorToPlayer.y >= -1.5f) { //"on level" with or above the arrow, then shoot sideways
+                        bowDirection = 1; //sideways
                         attackAnimation = "AttackSide";
-                    } else { //below the arrow, shoot down
-                        bowDirection = -1;
+                    } else { //below the arrow, then shoot down
+                        bowDirection = -1; //down
                         attackAnimation = "AttackDown";
                     }
                     playerInRange = true;
@@ -69,38 +70,55 @@ public class ArcherEnemyController : MonoBehaviour {
                 }
             }
 
-            //Swap direction of sprite depending on direction to player
-            if(playerInRange && vectorToPlayer.x > 0) { //facing right
+            //swap direction of sprite depending on direction to player
+            if(playerInRange && vectorToPlayer.x > 0) {
                 GetComponent<SpriteRenderer>().flipX = true;
-                facingDirection = 1;
-            } else if(playerInRange && vectorToPlayer.x < 0) { //facing left
+                facingDirection = 1;  //facing right
+            } else if(playerInRange && vectorToPlayer.x < 0) {
                 GetComponent<SpriteRenderer>().flipX = false;
-                facingDirection = -1;
+                facingDirection = -1;  //facing left
             }
 
+            // -- ANIMATIONS --
+
+            //increase timer that controls attack cooldown
             timeSinceAttack += Time.deltaTime;
-            //Attack when the player is in range
+
+            //attack when the player is in range
             if(playerInRange && !attacking && timeSinceAttack >= attackCooldown) {
                 attacking = true;
-                animator.SetTrigger(attackAnimation); //projectile spawning triggered by animation
+                animator.SetTrigger(attackAnimation); //projectile spawning triggered by animation, which is determined by the player's position
                 timeSinceAttack = 0f; //resets attack timer
             }
 
-            //Idle
+            //idle if not attacking
             else {
                 animator.SetInteger("AnimState", 0);
             }
         } else if(healthManager.isDead) {
-            StartCoroutine(Die());
+            StartCoroutine(Die()); //start Die function if the character dies
         } else {
             animator.SetInteger("AnimState", 0); //idle when the player dies/game is not running
         }
     }
 
-    //sets the spawn position and angle of the arrow depending on where the player is
+    // -- ATTACKING --
+
+    //called by attack animation; spawns an arrow that follows the vectorToPlayer
+    public void SpawnArrow() {
+        SetArrowSpawnPos(); //sets the arrow's spawn point
+        //spawns the arrow in the set position and at the set angle and assigns it it's damage and range collider
+        GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPos.transform.position, arrowPrefab.transform.rotation * Quaternion.Euler(0f, 0f, arrowAngle));
+        arrow.GetComponent<Projectile>().arrowDamage = arrowDamage;
+        arrow.GetComponent<Projectile>().arrowRangeCollider = arrowRangeCollider;
+        audioSource.PlayOneShot(shootArrowSound); //play attack sound
+    }
+    //called by SpawnArrow to set the spawn position and angle of the arrow depending on where the player is
     private void SetArrowSpawnPos() {
+        //gets angle to the player
         arrowAngle = Vector2.SignedAngle(Vector2.right, vectorToPlayer);
 
+        //finds which direction the bow is facing and if it is up or down and clamps the arrow's angle between set values that make sense for the archer
         if(bowDirection == 1) { //aiming sideways
             if(facingDirection == 1) { //facing right
                 arrowSpawnPos = sideRightArrowSpawn;
@@ -119,32 +137,26 @@ public class ArcherEnemyController : MonoBehaviour {
             }
         }
     }
-    //called by attack animation; spawns an arrow that follows the vectorToPlayer
-    public void SpawnArrow() {
-        SetArrowSpawnPos();
-        GameObject arrow = Instantiate(arrowPrefab, arrowSpawnPos.transform.position, arrowPrefab.transform.rotation * Quaternion.Euler(0f, 0f, arrowAngle));
-        arrow.GetComponent<Projectile>().arrowDamage = arrowDamage;
-        arrow.GetComponent<Projectile>().arrowRangeCollider = arrowRangeCollider;
-        audioSource.PlayOneShot(shootArrowSound);
-    }
     //called at beginning and end of attack animation to signal when it is attacking
     public void SetAttacking(int isAttacking) {
-        attacking = (isAttacking > 0) ? true : false;
+        attacking = (isAttacking > 0); //converts int to bool
     }
+
+    // -- MISC. --
 
     //called when the enemy dies; despawns the corpse after a few seconds
     IEnumerator Die() {
         SetAttacking(0);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5); //waits 5 seconds to let the body linger
         if(healthManager.isDead) { //makes sure it hasn't respawned in that time
             gameObject.SetActive(false);
         }
     }
 
-
-    //draws representation of the attack area when the object is selected in the editor
+    //draws representations of the arrow range and arrow spawn positions when the object is selected in the editor
     private void OnDrawGizmosSelected() {
-        Gizmos.DrawWireSphere(transform.position, arrowRange);
+        Gizmos.DrawWireSphere(transform.position, arrowRange); //draws arrow range circle
+        //draw very small circles for the arrow spawn positions
         if(sideLeftArrowSpawn != null) {
             Gizmos.DrawWireSphere(sideLeftArrowSpawn.transform.position, 0.1f);
         }
