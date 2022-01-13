@@ -63,9 +63,6 @@ public class MenuManager : MonoBehaviour {
 
     //ends the game; called by the quit button
     public void QuitGame() {
-        if(UnityEditor.EditorApplication.isPlaying) //if the game is being played in the editor, then just stop the game
-            UnityEditor.EditorApplication.isPlaying = false;
-        else
-            Application.Quit();
+        Application.Quit();
     }
 }
